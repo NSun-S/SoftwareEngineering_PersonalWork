@@ -8,11 +8,12 @@ using namespace std;
 class line
 {
 public:
-	line(long long x1, long long y1, long long x2, long long y2);
+	line(double x1, double y1, double x2, double y2);
 	bool intersect(line line2, vector<pair<double, double>>& intersections);
-	long long x1;
-	long long y1;
-	long long x2;
-	long long y2;
+	//bool intersect(line line2, set<pair<double, double>>& intersections);
+	double x1;
+	double y1;
+	double x2;
+	double y2;
 };
 

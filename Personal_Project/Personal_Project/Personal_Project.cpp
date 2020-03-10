@@ -1,8 +1,8 @@
 ﻿// Personal_Project.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
 //
-
 #include <iostream>
 #include "line.h"
+#include "circle.h"
 #include <vector>
 #include <fstream>
 #include <string>
@@ -15,14 +15,21 @@ bool cmp(const pair<double, double> pair1, const pair<double, double> pair2)
 	return (pair1.first > pair2.first || (pair1.first == pair2.first && pair1.second > pair2.second));
 }
 
+bool myequal(const pair<double, double> pair1, const pair<double, double> pair2)
+{
+	return (fabs(pair1.first - pair2.first)<1e-10 && fabs(pair1.second - pair2.second) <1e-10);
+}
+
+
 int main()
 {
-	string input = "3000.txt";
+	string input = "input.txt";
 	string output = "output.txt";
 	fstream inputfile(input);
 	int n;
 	inputfile >> n;
 	vector<line> lines;
+	vector<circle>circles;
 	//set<pair<double, double>> intersections;
 	vector<pair<double, double>> intersections;
 	for (int i = 0; i < n; i++)
@@ -31,23 +38,51 @@ int main()
 		inputfile >> type;
 		if (type == 'L')
 		{
-			int x1, x2, y1, y2;
+			double x1, x2, y1, y2;
 			inputfile >> x1 >> y1 >> x2 >> y2;
 			lines.push_back(line(x1, y1, x2, y2));
 		}
+		else if (type == 'C')
+		{
+			double c1, c2, r;
+			inputfile >> c1 >> c2 >> r;
+			circles.push_back(circle(c1, c2, r));
+		}
 	}
-	for (int i = 0; i < n; i++)
+	for (unsigned i = 0; i < lines.size(); i++)
 	{
-		for (int j = i + 1; j < n; j++)
+		for (unsigned j = i + 1; j < lines.size(); j++)
 		{
 			lines[i].intersect(lines[j], intersections);
 		}
 	}
+	for (unsigned i = 0; i < circles.size(); i++)
+	{
+		for (unsigned j = i + 1; j < circles.size(); j++)
+		{
+			circles[i].intersectCircle(circles[j], intersections);
+		}
+		for (unsigned j = 0; j < lines.size(); j++)
+		{
+			circles[i].intersectLine(lines[j], intersections);
+		}
+	}
 	sort(intersections.begin(), intersections.end(), cmp);
-	intersections.erase(unique(intersections.begin(), intersections.end()), intersections.end());
+	//auto iter = unique(intersections.begin(), intersections.end());
+	//intersections.erase(iter, intersections.end());
 	//cout << intersections.size() << endl;
+	int count = 1;
+	for (unsigned i = 1; i < intersections.size(); i++)
+	{
+		if (!myequal(intersections[i - 1], intersections[i]))
+		{
+			count += 1;
+		}
+	}
 	fstream outputFile(output, ios::out);
-	outputFile << intersections.size();
+	//outputFile << intersections.size();
+	outputFile << count;
+	
 	//for (auto iter = intersections.begin(); iter != intersections.end(); iter++)
 	//{
 	//	cout << iter->first << ' ' << iter->second << endl;
