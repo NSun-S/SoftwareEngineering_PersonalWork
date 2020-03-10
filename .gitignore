@@ -1,0 +1,7 @@
+*.txt
+*.png
+*.vcxproj
+Personal_Project.vcxproj.filters
+Personal_Project.vcxproj.user
+*.py
+Debug
