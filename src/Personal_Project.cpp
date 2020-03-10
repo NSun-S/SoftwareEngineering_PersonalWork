@@ -21,10 +21,24 @@ bool myequal(const pair<double, double> pair1, const pair<double, double> pair2)
 }
 
 
-int main()
+int main(int argc, char* argv[])
 {
-	string input = "input.txt";
-	string output = "output.txt";
+	string input;
+	//string input = "input.txt";
+	string output;
+	//string output = "output.txt";
+	for (int i = 0; i < argc; i++)
+	{
+		if (strcmp(argv[i], "-i") == 0)
+		{
+			input = argv[i+1];
+		}
+		else if(strcmp(argv[i], "-o")==0)
+		{
+			output = argv[i + 1];
+		}
+	}
+	
 	fstream inputfile(input);
 	int n;
 	inputfile >> n;
@@ -81,7 +95,8 @@ int main()
 	}
 	fstream outputFile(output, ios::out);
 	//outputFile << intersections.size();
-	outputFile << count;
+	if (n != 0) outputFile << count;
+	else outputFile << 0;
 	
 	//for (auto iter = intersections.begin(); iter != intersections.end(); iter++)
 	//{
