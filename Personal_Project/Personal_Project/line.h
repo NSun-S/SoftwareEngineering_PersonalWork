@@ -3,15 +3,16 @@
 #include <utility>
 #include <math.h>
 #include <iostream>
+#include <vector>
 using namespace std;
 class line
 {
 public:
-	line(int x1, int y1, int x2, int y2);
-	bool intersect(line line2, set<pair<float, float>>& intersections);
-	int x1;
-	int y1;
-	int x2;
-	int y2;
+	line(long long x1, long long y1, long long x2, long long y2);
+	bool intersect(line line2, vector<pair<double, double>>& intersections);
+	long long x1;
+	long long y1;
+	long long x2;
+	long long y2;
 };
 

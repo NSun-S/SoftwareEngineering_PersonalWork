@@ -4,24 +4,35 @@
 #include <iostream>
 #include "line.h"
 #include <vector>
-
-
+#include <fstream>
+#include <string>
+#include <ios>
+#include <algorithm>
 using namespace std;
+
+bool cmp(const pair<double, double> pair1, const pair<double, double> pair2)
+{
+	return (pair1.first > pair2.first || (pair1.first == pair2.first && pair1.second > pair2.second));
+}
 
 int main()
 {
+	string input = "3000.txt";
+	string output = "output.txt";
+	fstream inputfile(input);
 	int n;
-	cin >> n;
+	inputfile >> n;
 	vector<line> lines;
-	set<pair<float, float>> intersections;
+	//set<pair<double, double>> intersections;
+	vector<pair<double, double>> intersections;
 	for (int i = 0; i < n; i++)
 	{
 		char type;
-		cin >> type;
+		inputfile >> type;
 		if (type == 'L')
 		{
 			int x1, x2, y1, y2;
-			cin >> x1 >> y1 >> x2 >> y2;
+			inputfile >> x1 >> y1 >> x2 >> y2;
 			lines.push_back(line(x1, y1, x2, y2));
 		}
 	}
@@ -32,7 +43,11 @@ int main()
 			lines[i].intersect(lines[j], intersections);
 		}
 	}
-	cout << intersections.size() << endl;
+	sort(intersections.begin(), intersections.end(), cmp);
+	intersections.erase(unique(intersections.begin(), intersections.end()), intersections.end());
+	//cout << intersections.size() << endl;
+	fstream outputFile(output, ios::out);
+	outputFile << intersections.size();
 	//for (auto iter = intersections.begin(); iter != intersections.end(); iter++)
 	//{
 	//	cout << iter->first << ' ' << iter->second << endl;
