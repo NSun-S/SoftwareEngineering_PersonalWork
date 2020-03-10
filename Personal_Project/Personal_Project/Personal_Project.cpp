@@ -2,7 +2,9 @@
 //
 
 #include <iostream>
-#include <line.h>
+#include "line.h"
+#include <vector>
+
 
 using namespace std;
 
@@ -10,8 +12,32 @@ int main()
 {
 	int n;
 	cin >> n;
-
-
+	vector<line> lines;
+	set<pair<float, float>> intersections;
+	for (int i = 0; i < n; i++)
+	{
+		char type;
+		cin >> type;
+		if (type == 'L')
+		{
+			int x1, x2, y1, y2;
+			cin >> x1 >> y1 >> x2 >> y2;
+			lines.push_back(line(x1, y1, x2, y2));
+		}
+	}
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = i + 1; j < n; j++)
+		{
+			lines[i].intersect(lines[j], intersections);
+		}
+	}
+	cout << intersections.size() << endl;
+	//for (auto iter = intersections.begin(); iter != intersections.end(); iter++)
+	//{
+	//	cout << iter->first << ' ' << iter->second << endl;
+	//}
+	return 0;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
